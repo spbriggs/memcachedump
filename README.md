@@ -17,6 +17,8 @@ optional arguments:
   --key KEY   Shodan API key.
   --out OUT   Output directory for caches.
   --json      Output as JSON. (Default: CSV)
+  --continue  Skip servers already listed in output directory ie continue a previous run
+  --shuffle	  Shuffle the list of servers from Shodan so they're queried in a random order
 ```
 
 You must supply your Shodan API `--key`. 
