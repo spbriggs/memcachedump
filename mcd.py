@@ -94,7 +94,7 @@ def get_servers(api_key, shuffleflag, continue_flag, outdir):
     if continue_flag:
         # Get files currently in output directory and remove .csv or .json extension so we just have the IP address
         currentfiles = [os.path.splitext(f)[0] for f in listdir(outdir) if isfile(join(outdir, f))]
-        memcached_servers = [x for x in memcached_servers if x not in currentfiles]     
+        memcached_servers = [x for x in memcached_servers if x["ip_str"] not in currentfiles]     
     if shuffleflag:
         shuffle(memcached_servers)
     return memcached_servers
