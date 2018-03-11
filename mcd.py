@@ -6,7 +6,7 @@ import json
 import csv
 import argparse
 import os
-from random import shuffle
+
 
 def make_query(query, s, chunk=4096):
     s.sendall("{}\r\n".format(query).encode())
@@ -75,7 +75,7 @@ def scrape(server, outdir, as_json):
         print("[+] Wrote CSV to {}".format(fname))
 
 
-def get_servers(api_key, shuffleflag):
+def get_servers(api_key):
     api = shodan.Shodan(api_key)
     memcached_servers = []
     try:
@@ -88,8 +88,6 @@ def get_servers(api_key, shuffleflag):
                 result["ip_str"]))
     except shodan.APIError as e:
         print("[-] Shodan error: %s" % e)
-    if shuffleflag:
-        shuffle(memcached_servers)
     return memcached_servers
 
 
@@ -103,12 +101,10 @@ parser.add_argument(
     action="store_true",
     default=False,
     help="Output as JSON. (Default: CSV)")
-parser.add_argument('--shuffle', dest='shuffleflag', action='store_true', help="Shuffle the list of memcached servers before querying.")
-
 args = parser.parse_args()
 if not os.path.exists(args.out):
     os.makedirs(args.out)
-for server in get_servers(args.key, args.shuffleflag):
+for server in get_servers(args.key):
     try:
         scrape(server, args.out, args.json)
     except Exception as e:
